@@ -1,34 +1,49 @@
 import React from "react";
 import { StyleSheet, TouchableHighlight, Text } from "react-native";
-import Home from "./Home";
+import { AsyncStorage } from "react-native";
+import { View } from "native-base";
+let count = 0;
 export default class GessButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      winner: false,
       counter: 0
     };
+    this.storeData = this.storeData.bind(this);
+  }
+
+  async storeData(data) {
+    return await AsyncStorage.setItem("count", JSON.stringify(data));
   }
 
   render() {
-    if (this.state.winner) {
-      <Home />;
-    }
     return (
-      <TouchableHighlight
-        style={styles.topButton}
-        onPress={this.guessButton.bind(this)}
-      >
-        <Text style={styles.buttonText}>{this.props.countrie}</Text>
-      </TouchableHighlight>
+      <View>
+        <TouchableHighlight
+          style={styles.topButton}
+          onPress={this.guessButton.bind(this)}
+        >
+          <Text style={styles.buttonText}>{this.props.countrie}</Text>
+        </TouchableHighlight>
+      </View>
     );
   }
+
   guessButton() {
     if (this.props.countrie === this.props.realCountrie) {
-      this.setState({ winner: true });
-      console.log("winner");
+      setTimeout(() => {
+        count++;
+        this.storeData(count);
+        this.setState({ counter: count });
+        this.props.score(this.state.counter);
+      }, 500);
     } else {
-      console.log("loose");
+      setTimeout(() => {
+        count = 0;
+        this.storeData(count);
+        this.setState({ counter: count });
+        this.props.score(this.state.counter);
+      }, 500);
     }
   }
 }

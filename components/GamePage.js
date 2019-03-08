@@ -9,42 +9,57 @@ import {
 import flags from "../Images/flags";
 import { _randomCountry, _countryName, _shuffle } from "../util/generateLogic";
 import GuessButton from "./GuessButtons";
-
+import { AsyncStorage } from "react-native";
+import { remove } from "../util/generateLogic";
+let count = 0;
 class GamePage extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      count: 0,
-      gameStatus: false
+      gameStatus: false,
+      counter: 0
     };
+    this.getScore = this.getScore.bind(this);
+    this.sata = this.sata.bind(this);
   }
 
-  componentDidMount() {}
+  getScore(cb) {
+    this.setState({ counter: cb });
+  }
+  sata() {
+    return AsyncStorage.getItem("count").then(counter => {
+      return JSON.parse(counter);
+    });
+  }
 
   render() {
     const state = this.props.state.countries;
-    const alpha2Code = state[
+    const cleanStates = state.filter(contry => {
+      return !remove.includes(contry.alpha2Code.toLowerCase());
+    });
+
+    const alpha2Code = cleanStates[
       Math.floor(Math.random() * Object.keys(flags).length)
     ].alpha2Code.toLowerCase();
 
-    const countryName = _countryName(alpha2Code, state);
-    const countriesArray = _randomCountry(state);
-    countriesArray.push(countryName);
-    const shuffeltGesses = _shuffle(countriesArray);
-    console.log(this.state.gameStatus);
+    const countryName = _countryName(alpha2Code, cleanStates);
 
+    const countriesArray = _randomCountry(cleanStates);
+    countriesArray.push(countryName);
+    const shuffeldGesses = _shuffle(countriesArray);
+    console.log(countryName);
+    console.log(alpha2Code);
     return (
       <View>
-        <Text style={styles.count}>{this.state.count}</Text>
-
+        <Text style={styles.count}>{this.state.counter}</Text>
         <Image style={styles.stretch} source={flags[alpha2Code]} />
-        {shuffeltGesses.map(countrie => {
+        {shuffeldGesses.map((countrie, i) => {
           return (
             <GuessButton
-              key={countrie}
+              key={i}
               realCountrie={countryName}
               countrie={countrie}
-              status={this.props.status}
+              score={this.getScore}
             />
           );
         })}

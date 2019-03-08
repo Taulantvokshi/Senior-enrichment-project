@@ -18,10 +18,6 @@ class Lala extends React.Component {
       countries: [],
       button: false
     };
-    this.getDataBack = this.getDataBack.bind(this);
-  }
-  getDataBack() {
-    return true;
   }
 
   componentDidMount() {
@@ -32,6 +28,7 @@ class Lala extends React.Component {
       this.state.button = false;
       return <GamePage status={this.getDataBack} state={this.state} />;
     }
+
     return (
       <View style={styles.container}>
         <Image style={styles.logo} source={require("../assets/earth.png")} />
