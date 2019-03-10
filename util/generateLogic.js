@@ -40,24 +40,46 @@ export const remove = [
   "aw",
   "bm",
   "tc",
-  "tk"
+  "tk",
+  "fi",
+  "cw",
+  "ss",
+  "ps",
+  "sj",
+  "gg",
+  "pm",
+  "gf",
+  "mq",
+  "nu",
+  "xk"
 ];
-export const _randomCountry = state => {
+export const _randomCountry = (state, randomCountriesNumber) => {
   const arr = [];
   while (true) {
     const random = Math.floor(Math.random() * state.length);
     arr.push(state[random].name);
-    if (arr.length === 3) {
+    if (arr.length === randomCountriesNumber) {
+      return arr;
+    }
+  }
+};
+
+export const _randomCountryAreaAndName = (state, randomCountriesNumber) => {
+  const arr = [];
+  while (true) {
+    const random = Math.floor(Math.random() * state.length);
+    arr.push(state[random]);
+    if (arr.length === randomCountriesNumber) {
       return arr;
     }
   }
 };
 
 export const _countryName = (alpha2Code, countries) => {
-  let state = "";
+  let state = {};
   countries.forEach(con => {
     if (con.alpha2Code.toLowerCase() === alpha2Code.toLowerCase()) {
-      state = con.name;
+      state = con;
     }
   });
   return state;

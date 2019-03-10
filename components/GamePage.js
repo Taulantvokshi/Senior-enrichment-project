@@ -9,10 +9,13 @@ import {
 import flags from "../Images/flags";
 import { _randomCountry, _countryName, _shuffle } from "../util/generateLogic";
 import GuessButton from "./GuessButtons";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, Alert, Modal } from "react-native";
 import { remove } from "../util/generateLogic";
-let count = 0;
+import Home from "./Home";
 class GamePage extends React.Component {
+  static navigationOptions = {
+    title: "Hello"
+  };
   constructor(props) {
     super(props);
     this.state = {
@@ -20,12 +23,18 @@ class GamePage extends React.Component {
       counter: 0
     };
     this.getScore = this.getScore.bind(this);
+    this.getGameStatus = this.getGameStatus.bind(this);
     this.sata = this.sata.bind(this);
+  }
+
+  getGameStatus(cb) {
+    this.setState({ gameStatus: cb });
   }
 
   getScore(cb) {
     this.setState({ counter: cb });
   }
+
   sata() {
     return AsyncStorage.getItem("count").then(counter => {
       return JSON.parse(counter);
@@ -44,15 +53,32 @@ class GamePage extends React.Component {
 
     const countryName = _countryName(alpha2Code, cleanStates);
 
-    const countriesArray = _randomCountry(cleanStates);
-    countriesArray.push(countryName);
+    const countriesArray = _randomCountry(cleanStates, 3);
+    countriesArray.push(countryName.name);
     const shuffeldGesses = _shuffle(countriesArray);
-    console.log(countryName);
+
+    console.log(countryName.name);
     console.log(alpha2Code);
+
+    if (this.state.gameStatus === true) {
+      Alert.alert("Game Over", "Good luck next time!", {
+        text: "OK",
+        onPress: () => this.sendMeHome(),
+        style: "cancel"
+      });
+      return <Home />;
+    }
+
     return (
       <View>
         <Text style={styles.count}>{this.state.counter}</Text>
-        <Image style={styles.stretch} source={flags[alpha2Code]} />
+        <Image
+          style={[
+            styles.profileImgContainer,
+            { borderColor: "black", borderWidth: 2 }
+          ]}
+          source={flags[alpha2Code]}
+        />
         {shuffeldGesses.map((countrie, i) => {
           return (
             <GuessButton
@@ -60,6 +86,7 @@ class GamePage extends React.Component {
               realCountrie={countryName}
               countrie={countrie}
               score={this.getScore}
+              gameStatus={this.getGameStatus}
             />
           );
         })}
@@ -70,12 +97,10 @@ class GamePage extends React.Component {
 
 const styles = StyleSheet.create({
   stretch: {
-    backfaceVisibility: "visible",
     width: 200,
     height: 200,
     alignSelf: "center",
-    margin: 20,
-    borderColor: "#d6d7da"
+    margin: 20
   },
   texts: {
     alignSelf: "center"
@@ -108,6 +133,13 @@ const styles = StyleSheet.create({
     margin: 10,
     justifyContent: "center",
     borderRadius: 50
+  },
+  profileImgContainer: {
+    backfaceVisibility: "visible",
+    marginBottom: 60,
+    height: 200,
+    width: 200,
+    alignSelf: "center"
   }
 });
 export default GamePage;

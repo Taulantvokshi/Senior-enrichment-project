@@ -1,13 +1,16 @@
 import React from "react";
 import { StyleSheet, TouchableHighlight, Text } from "react-native";
-import { AsyncStorage } from "react-native";
+import { AsyncStorage, Alert } from "react-native";
 import { View } from "native-base";
 let count = 0;
+
 export default class GessButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      counter: 0
+      counter: 0,
+      onCliced: false,
+      lostGame: false
     };
     this.storeData = this.storeData.bind(this);
   }
@@ -30,20 +33,22 @@ export default class GessButton extends React.Component {
   }
 
   guessButton() {
-    if (this.props.countrie === this.props.realCountrie) {
+    if (this.props.countrie === this.props.realCountrie.name) {
       setTimeout(() => {
         count++;
         this.storeData(count);
         this.setState({ counter: count });
         this.props.score(this.state.counter);
-      }, 500);
+        this.setState({ lostGame: false });
+      }, 300);
     } else {
       setTimeout(() => {
         count = 0;
         this.storeData(count);
-        this.setState({ counter: count });
+        this.setState({ counter: count, onCliced: true, lostGame: true });
         this.props.score(this.state.counter);
-      }, 500);
+        this.props.gameStatus(this.state.lostGame);
+      }, 300);
     }
   }
 }

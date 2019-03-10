@@ -1,5 +1,7 @@
 import React from "react";
 import GamePage from "./GamePage";
+import Areagame from "./Areagame";
+import GdpGame from "./GdpGame";
 import {
   StyleSheet,
   Text,
@@ -16,7 +18,8 @@ class Lala extends React.Component {
     this.state = {
       showProgress: false,
       countries: [],
-      button: false
+      button: false,
+      areaGame: false
     };
   }
 
@@ -28,17 +31,35 @@ class Lala extends React.Component {
       this.state.button = false;
       return <GamePage status={this.getDataBack} state={this.state} />;
     }
+    if (this.state.areaGame) {
+      this.state.button = false;
+      return <Areagame state={this.state} />;
+    }
 
     return (
       <View style={styles.container}>
         <Image style={styles.logo} source={require("../assets/earth.png")} />
-        <Text style={styles.heading}> I guess </Text>
+        <Text style={styles.heading}> Iguess </Text>
 
         <TouchableHighlight
           onPress={this.onLoginPressed.bind(this)}
           style={styles.button}
         >
-          <Text style={styles.buttonText}>Start Game</Text>
+          <Text style={styles.buttonText}>Flag's Game</Text>
+        </TouchableHighlight>
+
+        <TouchableHighlight
+          onPress={this.areaGameButton.bind(this)}
+          style={styles.buttonArea}
+        >
+          <Text style={styles.buttonText}>Area game</Text>
+        </TouchableHighlight>
+
+        <TouchableHighlight
+          //onPress={this.areaGameButton.bind(this)}
+          style={styles.buttonGdp}
+        >
+          <Text style={styles.buttonText}>Gdp game</Text>
         </TouchableHighlight>
 
         <ActivityIndicator animating={this.state.showProgress} size="large" />
@@ -63,6 +84,22 @@ class Lala extends React.Component {
         this.setState({ button: true });
       });
   }
+  areaGameButton() {
+    this.setState({ showProgress: true });
+
+    fetch("https://restcountries.eu/rest/v2/all")
+      .then(results => {
+        return results.json();
+      })
+      .then(results => {
+        this.setState({ showProgress: false });
+        return results;
+      })
+      .then(data => {
+        this.setState({ countries: data });
+        this.setState({ areaGame: true });
+      });
+  }
 }
 
 const styles = StyleSheet.create({
@@ -72,7 +109,7 @@ const styles = StyleSheet.create({
   },
   container: {
     alignItems: "center",
-    paddingTop: 150
+    paddingTop: 20
   },
   heading: {
     fontSize: 30,
@@ -80,10 +117,11 @@ const styles = StyleSheet.create({
     fontWeight: "900"
   },
   button: {
+    marginTop: 50,
     height: 50,
     backgroundColor: "#48BBEC",
     alignSelf: "stretch",
-    margin: 40,
+    margin: 10,
     justifyContent: "center",
     borderRadius: 50
   },
@@ -92,7 +130,22 @@ const styles = StyleSheet.create({
     color: "#FFF",
     alignSelf: "center"
   },
-  loader: {}
+  buttonArea: {
+    height: 50,
+    backgroundColor: "#a1dd70",
+    alignSelf: "stretch",
+    margin: 10,
+    justifyContent: "center",
+    borderRadius: 50
+  },
+  buttonGdp: {
+    height: 50,
+    backgroundColor: "#d9a2f1",
+    alignSelf: "stretch",
+    margin: 10,
+    justifyContent: "center",
+    borderRadius: 50
+  }
 });
 
 export default Lala;

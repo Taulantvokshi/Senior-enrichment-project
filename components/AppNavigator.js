@@ -1,7 +1,7 @@
 import { createAppContainer, createStackNavigator } from "react-navigation";
 import Root from "../Root";
-import Home from "../components/Home";
-import GamePage from "../components/GamePage";
+import Home from "./Home";
+import GamePage from "./GamePage";
 
 const AppNavigator = createStackNavigator({
   Root: { screen: Root },
