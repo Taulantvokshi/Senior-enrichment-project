@@ -6,10 +6,6 @@ export default class Root extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Image
-          style={styles.image}
-          source={require("./assets/continents.png")}
-        />
         <Home />
       </View>
     );

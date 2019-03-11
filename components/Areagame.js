@@ -1,18 +1,30 @@
 import React from "react";
+import {
+  Text,
+  StyleSheet,
+  View,
+  Button,
+  AsyncStorage,
+  Alert
+} from "react-native";
+
 import Home from "./Home";
 import flags from "../Images/flags";
 import { _countryName } from "../util/generateLogic";
 import { remove } from "../util/generateLogic";
 import AreaButtons from "./ArreaButtons";
-import { Text, StyleSheet, View, Button } from "react-native";
-
+let winnerContry;
 export default class Areagame extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       goHome: false,
+      gameStatus: false,
       counter: 0
     };
+    this.getScore = this.getScore.bind(this);
+    this.sata = this.sata.bind(this);
+    this.getGameStatus = this.getGameStatus.bind(this);
   }
   createAlpha2Codes(cleanStates) {
     let arr = [];
@@ -26,6 +38,20 @@ export default class Areagame extends React.Component {
     return arr;
   }
 
+  getGameStatus(cb) {
+    this.setState({ gameStatus: cb });
+  }
+
+  getScore(cb) {
+    this.setState({ counter: cb });
+  }
+
+  sata() {
+    return AsyncStorage.getItem("areaCountData").then(counter => {
+      return JSON.parse(counter);
+    });
+  }
+
   render() {
     const state = this.props.state.countries;
     const cleanStates = state.filter(contry => {
@@ -36,21 +62,40 @@ export default class Areagame extends React.Component {
 
     const countryName = _countryName(reandomTwoContries[0], cleanStates);
     const secondCountrie = _countryName(reandomTwoContries[1], cleanStates);
-    const randomContriesNames = [countryName, secondCountrie];
+    const bothContries = [countryName, secondCountrie];
 
+    if (bothContries[0].area >= bothContries[1].area) {
+      winnerContry = bothContries[0];
+    } else if (bothContries[1].area > bothContries[0].area) {
+      winnerContry = bothContries[1];
+    }
+    console.log(bothContries[0].area, "first Countrie");
+    console.log(bothContries[1].area, "second Countrie");
+    console.log("-----------");
+    console.log(winnerContry.area, winnerContry.name);
     if (this.state.goHome) {
+      return <Home />;
+    }
+    if (this.state.gameStatus === true) {
+      Alert.alert("Game Over", "Good luck next time!", {
+        text: "OK",
+        onPress: () => <Home />,
+        style: "cancel"
+      });
       return <Home />;
     }
     return (
       <View>
         <Text style={styles.count}>{this.state.counter}</Text>
-        {randomContriesNames.map((contry, i) => {
+        {bothContries.map((contry, i) => {
           return (
             <AreaButtons
               key={i}
               contry={contry}
               alpha2CodeImage={reandomTwoContries[i]}
-              allCountries={randomContriesNames}
+              allCountries={winnerContry}
+              score={this.getScore}
+              gameStatus={this.getGameStatus}
             />
           );
         })}

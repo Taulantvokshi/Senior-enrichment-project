@@ -1,9 +1,9 @@
 {
   "devToolsPort": 19003,
-  "expoServerPort": 19000,
-  "packagerPort": 19001,
-  "packagerPid": 22743,
-  "expoServerNgrokUrl": "https://48-wub.anonymous.geographyplay.exp.direct",
-  "packagerNgrokUrl": "https://packager.48-wub.anonymous.geographyplay.exp.direct",
-  "ngrokPid": 22764
+  "expoServerPort": null,
+  "packagerPort": null,
+  "packagerPid": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null
 }

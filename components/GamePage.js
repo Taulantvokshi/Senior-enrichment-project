@@ -9,7 +9,7 @@ import {
 import flags from "../Images/flags";
 import { _randomCountry, _countryName, _shuffle } from "../util/generateLogic";
 import GuessButton from "./GuessButtons";
-import { AsyncStorage, Alert, Modal } from "react-native";
+import { AsyncStorage, Alert } from "react-native";
 import { remove } from "../util/generateLogic";
 import Home from "./Home";
 class GamePage extends React.Component {
@@ -23,8 +23,8 @@ class GamePage extends React.Component {
       counter: 0
     };
     this.getScore = this.getScore.bind(this);
-    this.getGameStatus = this.getGameStatus.bind(this);
     this.sata = this.sata.bind(this);
+    this.getGameStatus = this.getGameStatus.bind(this);
   }
 
   getGameStatus(cb) {
@@ -36,7 +36,7 @@ class GamePage extends React.Component {
   }
 
   sata() {
-    return AsyncStorage.getItem("count").then(counter => {
+    return AsyncStorage.getItem("areaCountData").then(counter => {
       return JSON.parse(counter);
     });
   }

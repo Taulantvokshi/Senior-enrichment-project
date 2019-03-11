@@ -3,32 +3,28 @@ import { StyleSheet, TouchableHighlight, Text } from "react-native";
 import { AsyncStorage, Alert, Image } from "react-native";
 import { View } from "native-base";
 import flags from "../Images/flags";
-
+let count = 0;
 export default class AreaButtons extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      winnerContry: 0
+      counter: 0,
+      winnerContry: 0,
+      lostGame: false,
+      onCliced: false
     };
     this.guessButton = this.guessButton.bind(this);
+    this.storeData = this.storeData.bind(this);
   }
-  componentDidMount() {
-    const bothContries = this.props.allCountries;
-    if (bothContries[0].area >= bothContries[1].area)
-      this.setState({ winnerContry: bothContries[0].area });
-    else this.setState({ winnerContry: bothContries[1].area });
+
+  async storeData(data) {
+    return await AsyncStorage.setItem("areaCountData", JSON.stringify(data));
   }
 
   render() {
-    console.log(
-      this.props.allCountries[0].area,
-      this.props.allCountries[0].name
-    );
-    console.log(
-      this.props.allCountries[1].area,
-      this.props.allCountries[1].name
-    );
+    //console.log(this.props.allCountries.name, this.props.allCountries.area);
     const contry = this.props.contry;
+    console.log(this.props.contry.area, typeof this.props.contry.area, "xxxxx");
     return (
       <View>
         <Image
@@ -48,10 +44,28 @@ export default class AreaButtons extends React.Component {
     );
   }
   guessButton(contry) {
-    if (contry.area >= this.state.winnerContry) {
-      console.log("winner");
+    if (this.props.allCountries.area === contry.area) {
+      setTimeout(() => {
+        console.log("wiiin");
+        count++;
+        this.storeData(count);
+        this.setState({ counter: count });
+        this.props.score(this.state.counter);
+        this.setState({ lostGame: false });
+      }, 300);
     } else {
-      console.log("looser");
+      setTimeout(() => {
+        console.log("loose");
+        count = 0;
+        this.storeData(count);
+        this.setState({
+          counter: count,
+          onCliced: true,
+          lostGame: true
+        });
+        this.props.score(this.state.counter);
+        this.props.gameStatus(this.state.lostGame);
+      }, 300);
     }
   }
 }

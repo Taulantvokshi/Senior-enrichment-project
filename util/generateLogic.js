@@ -51,7 +51,8 @@ export const remove = [
   "gf",
   "mq",
   "nu",
-  "xk"
+  "xk",
+  "vg"
 ];
 export const _randomCountry = (state, randomCountriesNumber) => {
   const arr = [];

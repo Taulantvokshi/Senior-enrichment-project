@@ -1,7 +1,7 @@
 import React from "react";
 import GamePage from "./GamePage";
 import Areagame from "./Areagame";
-import GdpGame from "./GdpGame";
+
 import {
   StyleSheet,
   Text,
@@ -64,6 +64,11 @@ class Lala extends React.Component {
 
         <ActivityIndicator animating={this.state.showProgress} size="large" />
         <Text>{this.state.countrie} </Text>
+
+        <Image
+          style={styles.image}
+          source={require("../assets/continents.png")}
+        />
       </View>
     );
   }
@@ -145,6 +150,13 @@ const styles = StyleSheet.create({
     margin: 10,
     justifyContent: "center",
     borderRadius: 50
+  },
+  image: {
+    position: "absolute",
+    top: 450,
+    left: 40,
+    width: 300,
+    height: 300
   }
 });
 
