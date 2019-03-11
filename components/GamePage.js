@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Text,
-  Image,
-  StyleSheet,
-  View,
-  TouchableHighlight
-} from "react-native";
+import { Text, Image, StyleSheet, View } from "react-native";
 import flags from "../Images/flags";
 import { _randomCountry, _countryName, _shuffle } from "../util/generateLogic";
 import GuessButton from "./GuessButtons";
@@ -57,15 +51,12 @@ class GamePage extends React.Component {
     countriesArray.push(countryName.name);
     const shuffeldGesses = _shuffle(countriesArray);
 
-    console.log(countryName.name);
-    console.log(alpha2Code);
-
     if (this.state.gameStatus === true) {
-      Alert.alert("Game Over", "Good luck next time!", {
-        text: "OK",
-        onPress: () => this.sendMeHome(),
-        style: "cancel"
-      });
+      // Alert.alert("Game Over", "Good luck next time!", {
+      //   text: "OK",
+      //   onPress: () => this.sendMeHome(),
+      //   style: "cancel"
+      // });
       return <Home />;
     }
 

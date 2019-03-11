@@ -22,9 +22,8 @@ export default class AreaButtons extends React.Component {
   }
 
   render() {
-    //console.log(this.props.allCountries.name, this.props.allCountries.area);
     const contry = this.props.contry;
-    console.log(this.props.contry.area, typeof this.props.contry.area, "xxxxx");
+
     return (
       <View>
         <Image
@@ -46,7 +45,6 @@ export default class AreaButtons extends React.Component {
   guessButton(contry) {
     if (this.props.allCountries.area === contry.area) {
       setTimeout(() => {
-        console.log("wiiin");
         count++;
         this.storeData(count);
         this.setState({ counter: count });
@@ -55,7 +53,6 @@ export default class AreaButtons extends React.Component {
       }, 300);
     } else {
       setTimeout(() => {
-        console.log("loose");
         count = 0;
         this.storeData(count);
         this.setState({

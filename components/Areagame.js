@@ -69,24 +69,22 @@ export default class Areagame extends React.Component {
     } else if (bothContries[1].area > bothContries[0].area) {
       winnerContry = bothContries[1];
     }
-    console.log(bothContries[0].area, "first Countrie");
-    console.log(bothContries[1].area, "second Countrie");
-    console.log("-----------");
-    console.log(winnerContry.area, winnerContry.name);
+
     if (this.state.goHome) {
       return <Home />;
     }
     if (this.state.gameStatus === true) {
-      Alert.alert("Game Over", "Good luck next time!", {
-        text: "OK",
-        onPress: () => <Home />,
-        style: "cancel"
-      });
+      // Alert.alert("Game Over", "Good luck next time!", {
+      //   text: "OK",
+      //   onPress: () => <Home />,
+      //   style: "cancel"
+      // });
       return <Home />;
     }
     return (
       <View>
         <Text style={styles.count}>{this.state.counter}</Text>
+        <Text style={styles.titles}>Which country has a bigger area</Text>
         {bothContries.map((contry, i) => {
           return (
             <AreaButtons
@@ -154,5 +152,10 @@ const styles = StyleSheet.create({
     height: 200,
     width: 200,
     alignSelf: "center"
+  },
+  titles: {
+    fontSize: 16,
+    alignSelf: "center",
+    fontWeight: "500"
   }
 });

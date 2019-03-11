@@ -1,6 +1,7 @@
 import React from "react";
 import GamePage from "./GamePage";
 import Areagame from "./Areagame";
+import LearnAboutCountries from "./LearnAboutContries";
 
 import {
   StyleSheet,
@@ -19,7 +20,8 @@ class Lala extends React.Component {
       showProgress: false,
       countries: [],
       button: false,
-      areaGame: false
+      areaGame: false,
+      showAll: false
     };
   }
 
@@ -28,12 +30,14 @@ class Lala extends React.Component {
   }
   render() {
     if (this.state.button) {
-      this.state.button = false;
       return <GamePage status={this.getDataBack} state={this.state} />;
     }
     if (this.state.areaGame) {
-      this.state.button = false;
       return <Areagame state={this.state} />;
+    }
+
+    if (this.state.showAll) {
+      return <LearnAboutCountries state={this.state} />;
     }
 
     return (
@@ -56,10 +60,10 @@ class Lala extends React.Component {
         </TouchableHighlight>
 
         <TouchableHighlight
-          //onPress={this.areaGameButton.bind(this)}
+          onPress={this.showAll.bind(this)}
           style={styles.buttonGdp}
         >
-          <Text style={styles.buttonText}>Gdp game</Text>
+          <Text style={styles.buttonText}>Learn about Countries</Text>
         </TouchableHighlight>
 
         <ActivityIndicator animating={this.state.showProgress} size="large" />
@@ -103,6 +107,22 @@ class Lala extends React.Component {
       .then(data => {
         this.setState({ countries: data });
         this.setState({ areaGame: true });
+      });
+  }
+  showAll() {
+    this.setState({ showProgress: true });
+
+    fetch("https://restcountries.eu/rest/v2/all")
+      .then(results => {
+        return results.json();
+      })
+      .then(results => {
+        this.setState({ showProgress: false });
+        return results;
+      })
+      .then(data => {
+        this.setState({ countries: data });
+        this.setState({ showAll: true });
       });
   }
 }

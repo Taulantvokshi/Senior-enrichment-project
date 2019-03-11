@@ -13,6 +13,7 @@
     "react": "16.5.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-32.0.0.tar.gz",
     "react-native-axios": "^0.17.1",
+    "react-native-elements": "^1.1.0",
     "react-native-svg-from-uri": "^1.0.2",
     "react-native-svg-img": "^2.0.6",
     "react-native-svg-uri": "^1.2.3",
